@@ -1,5 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
-
+import enviroment from './env'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -21,7 +21,9 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    "@/plugins/axios.ts"
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: false,
@@ -67,4 +69,5 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  env: enviroment
 }

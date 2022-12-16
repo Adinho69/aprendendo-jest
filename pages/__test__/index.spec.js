@@ -23,7 +23,7 @@ describe("Index - Unit", () => {
 
   })
 
-  it('is vue instance', () => {
+  it('is vue instance - Unit', () => {
     const wrapper = mount(Index, {
       localVue,
       vuetify,
@@ -35,16 +35,32 @@ describe("Index - Unit", () => {
     expect(wrapper.vm).toBeDefined()
   })
 
-  it("button redirect", async () => {
+  it("button redirect - Unit", async () => {
+    //let btnFn = jest.fn()
     const wrapper = mount(Index, {
       localVue,
       vuetify,
-      router
+      router,
+
     })
+    wrapper.vm.redirectByInspire = jest.fn();
 
     const btnRedirect = wrapper.find("#btn-redirect")
     await btnRedirect.trigger('click')
 
     expect(wrapper.emitted()).toBeTruthy()
+    expect(wrapper.vm.redirectByInspire).toBeTruthy()
   })
+
+  it('should render - Unit ', function () {
+    const wrapper = mount(Index, {
+      localVue,
+      vuetify,
+      router
+    })
+    expect(wrapper.html()).toContain('v-card');
+    expect(wrapper.html()).toContain('Welcome to the Vuetify + Nuxt.js template');
+
+  });
+
 })
