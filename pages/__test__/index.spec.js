@@ -9,6 +9,15 @@ const localVue = createLocalVue();
 Vue.use(Vuetify)
 Vue.use(Router)
 
+const mockRouter = {
+  push: jest.fn(),
+  back: jest.fn(),
+  params:{
+    path: '',
+    query: {}
+  }
+}
+
 describe("Index - Unit", () => {
   let vuetify
   let router
@@ -23,26 +32,29 @@ describe("Index - Unit", () => {
 
   })
 
-  it('is vue instance - Unit', () => {
-    const wrapper = mount(Index, {
-      localVue,
-      vuetify,
-      router
-     // nuxt
-
-    });
-
-    expect(wrapper.vm).toBeDefined()
-  })
-
-  it("button redirect - Unit", async () => {
-    //let btnFn = jest.fn()
-    const wrapper = mount(Index, {
+  const mountFunction = (options) => {
+    return mount(Index, {
       localVue,
       vuetify,
       router,
-
+      global: {
+        mocks: {
+          $router: mockRouter
+        }
+      },
+      ...options
     })
+  }
+
+  it('is vue instance - Unit', () => {
+    const wrapper = mountFunction();
+
+    expect(wrapper.vm).toBeDefined()
+  });
+
+  it("button redirect - Unit", async () => {
+    //let btnFn = jest.fn()
+    const wrapper = mountFunction();
     wrapper.vm.redirectByInspire = jest.fn();
 
     const btnRedirect = wrapper.find("#btn-redirect")
@@ -50,17 +62,41 @@ describe("Index - Unit", () => {
 
     expect(wrapper.emitted()).toBeTruthy()
     expect(wrapper.vm.redirectByInspire).toBeTruthy()
-  })
+  });
 
   it('should render - Unit ', function () {
-    const wrapper = mount(Index, {
-      localVue,
-      vuetify,
-      router
-    })
+    const wrapper =mountFunction();
     expect(wrapper.html()).toContain('v-card');
     expect(wrapper.html()).toContain('Welcome to the Vuetify + Nuxt.js template');
 
   });
 
+  it("method getPokemon - Unit", () => {
+
+    let poke = null
+    const dataMock ={
+      id: 4
+    }
+    const wrapper = mountFunction({
+      data(){
+        return{
+           poke: {}
+
+        }
+      },
+      methods: {
+
+      }
+    })
+    wrapper.setMethods(
+      {
+        getPokemon : jest.fn().mockImplementation(() => {
+          poke = dataMock;
+        })
+      }
+    )
+
+      wrapper.vm.getPokemon();
+    expect(poke).toBe(dataMock);
+  })
 })

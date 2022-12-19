@@ -8,7 +8,7 @@
         </v-card-title>
         <v-card-text>
           as
-          <v-img sizes="10px" :src="data.sprites.front_default" ></v-img>
+         {{poke}}
 
         </v-card-text>
         <v-card-actions>
@@ -20,25 +20,33 @@
   </v-row>
 </template>
 
-<script>
+<script >
 
 
 import {getPokemonById} from '~/services'
 export default {
   name: 'IndexPage',
   data(){
-    return {}
+    return {
+      poke: null
+    }
   },
   methods: {
     redirectByInspire() {
       this.$router.push('/inspire');
       console.log('oi')
     },
+    async getPokemon(id){
+      this.poke = await getPokemonById(id)
+    }
   },
-  async asyncData({$api}) {
-    const data = await getPokemonById(150)
-    console.log(data)
-    return {data}
+  created() {
+    this.getPokemon(1);
   }
+  // async asyncData({$api}) {
+  //   const data = await getPokemonById(150)
+  //   console.log(data)
+  //   return {data}
+  // }
 }
 </script>

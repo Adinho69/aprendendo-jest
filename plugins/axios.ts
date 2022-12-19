@@ -1,6 +1,17 @@
 import {Plugin} from '@nuxt/types'
 import {NuxtAxiosInstance} from '@nuxtjs/axios'
 
+declare module 'vue/types/vue' {
+  interface Vue {
+    $api: NuxtAxiosInstance
+  }
+}
+declare module '@nuxt/types' {
+  interface Context {
+    $api: NuxtAxiosInstance
+  }
+}
+
 const config = {
   baseURL: process.env.baseAPi
 }
